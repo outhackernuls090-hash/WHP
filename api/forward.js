@@ -1,3 +1,4 @@
+// api/forward.js
 import { getWebhook } from "../lib/db.js";
 
 export default async function handler(req, res) {
@@ -16,14 +17,9 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: "Invalid webhook ID" });
   }
 
-  // 🔒 Bind to game
+  // Optional hardening
   if (record.placeId && record.placeId !== placeId) {
     return res.status(403).json({ error: "Invalid place" });
-  }
-
-  // 🧪 Basic validation
-  if (!Array.isArray(embeds) || embeds.length > 5) {
-    return res.status(400).json({ error: "Invalid embeds" });
   }
 
   await fetch(record.webhook, {
